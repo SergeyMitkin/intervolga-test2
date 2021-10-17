@@ -9,10 +9,7 @@
 </head>
 <body>
     <div class="banner">
-        <img src="wood.png" />
-        <!--
-        <img src="images/milky-way-2695569.png" />
-        -->
+        <img src="../images/thumbs/image.png" />
     </div>
 </body>
 </html>

@@ -1,85 +1,28 @@
 <?php
 
+// Увеличиваем оперативную память и время работы скрипта для работы с изображением
 ini_set('memory_limit', '6000M');
 ini_set('max_execution_time', 200);
 
-$path = 'images/wood.png';
+// Подключаем модель
+require_once ('models/model-image.php');
 
+// Путь до изображения
+$filename = 'image.png';
+$path = 'images/' . $filename;
+
+// Размеры баннера
 $width=200;
 $height=100;
 
-createImage($path, $width, $height);
-?>
-
-<img src="small.png">
-
-<?php
-
-function createImage($path, $width, $height){
-
-    $image_size = getimagesize($path); // Размеры исходного изображения
-    $src_img = imagecreatefrompng($path);
-
-    // Создаём пустое изображение для аватарки
-    $image = imagecreatetruecolor($width, $height);
-
-    // Создаём фон изображения
-    $background = imagecolorallocate($image, 0, 0, 0);
-
-    // Делаем фон прозрачным
-    imagecolortransparent($image, $background);
-
-    $src_aspect = $image_size[0]/$image_size[1]; // Отношение ширины к высоте исходного изображения
-    $thumb_aspect = $width/$height; // Отношение ширины к высоте аватарки
-
-    // Масштабируем ресурс исходника с помощью imagecopyresampled()
-    // Широкий вариант (фиксированная высота)
-    if($src_aspect < $thumb_aspect){
-        $src_width = $image_size[0]*$thumb_aspect; // Изменяем ширину ресурса исходника в соответсвии с шириной ресурса аватарки
-        $src_height = $image_size[1];
-
-        // Располагаем ресурс исходника в ресурсе аватарки по центру
-        $width_ratio = $thumb_aspect/$src_aspect;
-        $dst_y = 0;
-        $dst_x = ($width / $width_ratio) / 2;
-        $src_x = 0;
-        $src_y = 0;
-
-        imagecopyresampled($image, $src_img, $dst_x, $dst_y, $src_x, $src_y, $width, $height, $src_width, $src_height);
-    }
-    // Узкий вариант (фиксированная ширина)
-    else if ($src_aspect > $thumb_aspect){
-
-        $src_width = $image_size[0];
-        $src_height = $image_size[1]*$thumb_aspect; // Изменяем высоту ресурса исходника в соответсвии с высотой ресурса аватарки
-
-        // Располагаем ресурс исходника в ресурсе аватарки по центру
-        $height_ratio = $thumb_aspect/$src_aspect;
-        $dst_y = ($height / $height_ratio) / 2;
-        $dst_x = 0;
-        $src_x = 0;
-        $src_y = 0;
-
-        imagecopyresampled($image, $src_img, $dst_x, $dst_y, $src_x, $src_y, $width, $height, $src_width, $src_height);
-    }
-    // При равном отношении ширины и высоты
-    else if ($src_aspect = $thumb_aspect){
-        $src_width = $image_size[0];
-        $src_height = $image_size[1];
-
-        // Располагаем ресурс исходника в ресурсе аватарки
-        $dst_y = 0;
-        $dst_x = 0;
-        $src_x = 0;
-        $src_y = 0;
-
-        imagecopyresampled($image, $src_img, $dst_x, $dst_y, $src_x, $src_y, $width, $height, $src_width, $src_height);
-    }
-
-    // Выводим аватарку
-    imagepng($image, "small.png");
-
-    // Чистим память от созданных изображений
-    imagedestroy($image);
-    imagedestroy($src_img);
+// Выводим изображение как баннер
+// Если нет сохранённой уменьшенная копии изображения, создаём его
+if (!array_search($filename, scandir('images/thumbs'))){
+    resizeImage($path, $width, $height);
 }
+
+// Подключаем шаблон
+require_once('templates/index.php');
+
+
+
