@@ -32,35 +32,48 @@ function createImage($path, $width, $height){
     $src_aspect = $image_size[0]/$image_size[1]; // Отношение ширины к высоте исходного изображения
     $thumb_aspect = $width/$height; // Отношение ширины к высоте аватарки
 
+    // Масштабируем ресурс исходника с помощью imagecopyresampled()
     // Широкий вариант (фиксированная высота)
-    if($src_aspect < $thumb_aspect) {
-
-        $src_width = $image_size[0]*$thumb_aspect;
+    if($src_aspect < $thumb_aspect){
+        $src_width = $image_size[0]*$thumb_aspect; // Изменяем ширину ресурса исходника в соответсвии с шириной ресурса аватарки
         $src_height = $image_size[1];
 
-        $width_ratio = $thumb_aspect/$src_aspect;
-
         // Располагаем ресурс исходника в ресурсе аватарки по центру
+        $width_ratio = $thumb_aspect/$src_aspect;
         $dst_y = 0;
         $dst_x = ($width / $width_ratio) / 2;
         $src_x = 0;
         $src_y = 0;
 
-        // Помещаем исходное изображение в ресурс для аватарки
         imagecopyresampled($image, $src_img, $dst_x, $dst_y, $src_x, $src_y, $width, $height, $src_width, $src_height);
-
     }
     // Узкий вариант (фиксированная ширина)
-    else if ($src_aspect > $thumb_aspect) {
+    else if ($src_aspect > $thumb_aspect){
 
-        $scale = $height / $image_size[1];
-        $new_size = array($height * $src_aspect, $height);
-        $src_pos = array(($image_size[0] * $scale - $width) / $scale / 2, 0); //Ищем расстояние по ширине от края картинки до начала картины после обрезки
+        $src_width = $image_size[0];
+        $src_height = $image_size[1]*$thumb_aspect; // Изменяем высоту ресурса исходника в соответсвии с высотой ресурса аватарки
+
+        // Располагаем ресурс исходника в ресурсе аватарки по центру
+        $height_ratio = $thumb_aspect/$src_aspect;
+        $dst_y = ($height / $height_ratio) / 2;
+        $dst_x = 0;
+        $src_x = 0;
+        $src_y = 0;
+
+        imagecopyresampled($image, $src_img, $dst_x, $dst_y, $src_x, $src_y, $width, $height, $src_width, $src_height);
     }
-    // Другое
-    else {
-        $new_size = array($width, $height);
-        $src_pos = array(0,0);
+    // При равном отношении ширины и высоты
+    else if ($src_aspect = $thumb_aspect){
+        $src_width = $image_size[0];
+        $src_height = $image_size[1];
+
+        // Располагаем ресурс исходника в ресурсе аватарки
+        $dst_y = 0;
+        $dst_x = 0;
+        $src_x = 0;
+        $src_y = 0;
+
+        imagecopyresampled($image, $src_img, $dst_x, $dst_y, $src_x, $src_y, $width, $height, $src_width, $src_height);
     }
 
     // Выводим аватарку
