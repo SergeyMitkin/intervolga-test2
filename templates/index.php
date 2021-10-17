@@ -1,7 +1,18 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: Sergey
- * Date: 16.10.2021
- * Time: 0:44
- */
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div class="banner">
+        <img src="wood.png" />
+        <!--
+        <img src="images/milky-way-2695569.png" />
+        -->
+    </div>
+</body>
+</html>
