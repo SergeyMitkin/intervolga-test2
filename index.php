@@ -11,12 +11,17 @@ require_once ('models/model-image.php');
 $filename = 'image.png';
 $path = 'images/' . $filename;
 
+// Создаём дирректорию для уменьшенных копий изображений, если её не существует
+if (!file_exists('images/thumbs')) {
+    mkdir('images/thumbs', 0777, false);
+}
+
 // Размеры баннера
 $width=200;
 $height=100;
 
 // Выводим изображение как баннер
-// Если нет сохранённой уменьшенная копии изображения, создаём его
+// Если нет сохранённой уменьшенной копии изображения, создаём его
 if (!array_search($filename, scandir('images/thumbs'))){
     resizeImage($path, $width, $height);
 }
