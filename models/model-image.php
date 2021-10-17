@@ -1,6 +1,9 @@
 <?php
 
-function resizeImage($path, $width, $height){
+/**
+ * Функция для создания уменьшенной копии изображения
+ */
+function createThumb($path, $width, $height){
 
     $image_size = getimagesize($path); // Размеры исходного изображения
     $src_img = imagecreatefrompng($path);
@@ -61,7 +64,7 @@ function resizeImage($path, $width, $height){
         imagecopyresampled($image, $src_img, $dst_x, $dst_y, $src_x, $src_y, $width, $height, $src_width, $src_height);
     }
 
-    // Создаём аватарку
+    // Сохраняем файл с аватаркой
     imagepng($image, "images/thumbs/image.png");
 
     // Чистим память от созданных изображений

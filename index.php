@@ -23,7 +23,7 @@ $height=100;
 // Выводим изображение как баннер
 // Если нет сохранённой уменьшенной копии изображения, создаём его
 if (!array_search($filename, scandir('images/thumbs'))){
-    resizeImage($path, $width, $height);
+    createThumb($path, $width, $height);
 }
 
 // Подключаем шаблон
