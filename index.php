@@ -35,33 +35,20 @@ function createImage($path, $width, $height){
     // Широкий вариант (фиксированная высота)
     if($src_aspect < $thumb_aspect) {
 
-        $new_src_height = $height;
+        $src_width = $image_size[0]*$thumb_aspect;
+        $src_height = $image_size[1];
 
-        // Выявляем соотношение между исходным изображением и аватаркой
-        $thumb_ratio = $image_size[1]/$height;
-        $new_src_width = $image_size[0]/$thumb_ratio;
+        $width_ratio = $thumb_aspect/$src_aspect;
+
+        // Располагаем ресурс исходника в ресурсе аватарки по центру
+        $dst_y = 0;
+        $dst_x = ($width / $width_ratio) / 2;
+        $src_x = 0;
+        $src_y = 0;
 
         // Помещаем исходное изображение в ресурс для аватарки
+        imagecopyresampled($image, $src_img, $dst_x, $dst_y, $src_x, $src_y, $width, $height, $src_width, $src_height);
 
-        // масштабируем изображение    функцией imagecopyresampled()
-        // $dest_img - уменьшенная копия
-        // $src_img - исходное изображение
-        // $w - ширина уменьшенной копии
-        // $h - высота уменьшенной копии
-        // $size_img[0] - ширина исходного изображения
-        // $size_img[1] - высота исходного изображения
-        imagecopyresampled($image, $src_img, 0, 0, 0, 0, $width, $height, $image_size[0]*2, $image_size[1]);
-
-
-
-
-        /*
-        $scale = $width / $image_size[0];
-        $new_size = array($width, $width / $src_aspect);
-
-        //Ищем расстояние по высоте от края картинки до начала картины после обрезки
-        $src_pos = array(0, ($image_size[1] * $scale - $height) / $scale / 2);
-        */
     }
     // Узкий вариант (фиксированная ширина)
     else if ($src_aspect > $thumb_aspect) {
