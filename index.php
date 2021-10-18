@@ -20,7 +20,6 @@ if (!file_exists('images/thumbs')) {
 $width=200;
 $height=100;
 
-// Выводим изображение как баннер
 // Если нет сохранённой уменьшенной копии изображения, создаём его
 if (!array_search($filename, scandir('images/thumbs'))){
     createThumb($path, $width, $height);

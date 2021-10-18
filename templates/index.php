@@ -9,6 +9,7 @@
 </head>
 <body>
     <div class="banner">
+        <!-- Выводим уменьшенную копию изображения -->
         <img src="../images/thumbs/image.png" />
     </div>
 </body>
